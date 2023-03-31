@@ -1,10 +1,9 @@
 import React from "react";
 import Like from "./like";
+import Loading from "./loading";
 
 const Movies = ({ movies, handleLike, handleDelete }) => {
   const { length: count } = movies;
-
-  if (count === 0) return <p>There are no movies in the database</p>;
 
   return (
     <>
@@ -21,6 +20,13 @@ const Movies = ({ movies, handleLike, handleDelete }) => {
           </tr>
         </thead>
         <tbody>
+          {count === 0 && (
+            <tr>
+              <td colSpan={5}>
+                <Loading />
+              </td>
+            </tr>
+          )}
           {movies.map((movie) => (
             <tr key={movie.id}>
               <td>{movie.title}</td>
