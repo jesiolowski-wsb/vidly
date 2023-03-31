@@ -1,11 +1,20 @@
 import React, { useState } from "react";
 import { getMovies } from "../services/fakeMovieService";
+import Like from "./like";
 
 const Movies = () => {
   const [movies, setMovies] = useState(getMovies());
 
   const handleDelete = (movie) => {
     setMovies(movies.filter((m) => m._id !== movie._id));
+  };
+
+  const handleLike = (movie) => {
+    const moviesLiked = [...movies];
+    const index = moviesLiked.indexOf(movie);
+    moviesLiked[index] = { ...movies[index] };
+    moviesLiked[index].liked = !movies[index].liked;
+    setMovies(moviesLiked);
   };
 
   const { length: count } = movies;
@@ -33,6 +42,9 @@ const Movies = () => {
               <td>{movie.genre.name}</td>
               <td>{movie.numberInStock}</td>
               <td>{movie.dailyRentalRate}</td>
+              <td>
+                <Like liked={movie.liked} onClick={() => handleLike(movie)} />
+              </td>
               <td>
                 <button
                   onClick={() => {
