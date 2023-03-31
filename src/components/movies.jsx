@@ -1,12 +1,20 @@
 import React, { useState } from "react";
-import { getMovies } from "../services/fakeMovieService";
 import Like from "./like";
+import axios from "axios";
+import { DATA_ENDPOINT } from "../config";
 
 const Movies = () => {
-  const [movies, setMovies] = useState(getMovies());
+  const [movies, setMovies] = useState([]);
+
+  React.useEffect(() => {
+    axios.get(`${DATA_ENDPOINT}/movies`).then((response) => {
+      console.log("fetch");
+      setMovies(response.data);
+    });
+  }, []);
 
   const handleDelete = (movie) => {
-    setMovies(movies.filter((m) => m._id !== movie._id));
+    setMovies(movies.filter((m) => m.id !== movie.id));
   };
 
   const handleLike = (movie) => {
@@ -37,7 +45,7 @@ const Movies = () => {
         </thead>
         <tbody>
           {movies.map((movie) => (
-            <tr key={movie._id}>
+            <tr key={movie.id}>
               <td>{movie.title}</td>
               <td>{movie.genre.name}</td>
               <td>{movie.numberInStock}</td>
