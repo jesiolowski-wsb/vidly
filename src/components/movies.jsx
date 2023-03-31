@@ -1,30 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import Like from "./like";
-import axios from "axios";
-import { DATA_ENDPOINT } from "../config";
 
-const Movies = () => {
-  const [movies, setMovies] = useState([]);
-
-  React.useEffect(() => {
-    axios.get(`${DATA_ENDPOINT}/movies`).then((response) => {
-      console.log("fetch");
-      setMovies(response.data);
-    });
-  }, []);
-
-  const handleDelete = (movie) => {
-    setMovies(movies.filter((m) => m.id !== movie.id));
-  };
-
-  const handleLike = (movie) => {
-    const moviesLiked = [...movies];
-    const index = moviesLiked.indexOf(movie);
-    moviesLiked[index] = { ...movies[index] };
-    moviesLiked[index].liked = !movies[index].liked;
-    setMovies(moviesLiked);
-  };
-
+const Movies = ({ movies, handleLike, handleDelete }) => {
   const { length: count } = movies;
 
   if (count === 0) return <p>There are no movies in the database</p>;
