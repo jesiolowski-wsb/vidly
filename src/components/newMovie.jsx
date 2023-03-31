@@ -1,9 +1,22 @@
 import React from "react";
+import axios from "axios";
+import { DATA_ENDPOINT } from "../config";
 
 function NewMovie() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(e.target.form.title.value);
+
+    axios
+      .post(`${DATA_ENDPOINT}/movies`, {
+        title: e.target.form.title.value,
+        genre: { id: "", name: "" },
+        numberInStock: e.target.form.stock.value,
+        dailyRentalRate: e.target.form.price.value,
+      })
+      .then((response) => {
+        console.log(response);
+      });
   };
 
   return (
