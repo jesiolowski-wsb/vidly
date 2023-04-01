@@ -1,16 +1,9 @@
-import React, { useState } from "react";
-import { getMovies } from "../services/fakeMovieService";
+import React from "react";
+import Like from "./like";
+import Loading from "./loading";
 
-const Movies = () => {
-  const [movies, setMovies] = useState(getMovies());
-
-  const handleDelete = (movie) => {
-    setMovies(movies.filter((m) => m._id !== movie._id));
-  };
-
+const Movies = ({ movies, handleLike, handleDelete }) => {
   const { length: count } = movies;
-
-  if (count === 0) return <p>There are no movies in the database</p>;
 
   return (
     <>
@@ -27,12 +20,22 @@ const Movies = () => {
           </tr>
         </thead>
         <tbody>
+          {count === 0 && (
+            <tr>
+              <td colSpan={5}>
+                <Loading />
+              </td>
+            </tr>
+          )}
           {movies.map((movie) => (
-            <tr key={movie._id}>
+            <tr key={movie.id}>
               <td>{movie.title}</td>
               <td>{movie.genre.name}</td>
               <td>{movie.numberInStock}</td>
               <td>{movie.dailyRentalRate}</td>
+              <td>
+                <Like liked={movie.liked} onClick={() => handleLike(movie)} />
+              </td>
               <td>
                 <button
                   onClick={() => {
